@@ -21,15 +21,11 @@ Swap them for your own if you like. Keep five of them either way: criterion 3
 names a target of "4 of 5", and four of three is not a thing.
 """
 
-QUESTIONS = [
-    # {"question": "...", "expects": "..."},
-    {"question": "", "expects": ""},
-    {"question": "", "expects": ""},
-    {"question": "", "expects": ""},
-    {"question": "", "expects": ""},
-    {"question": "", "expects": ""},
-]
-
+QUESTIONS = [ {"question": "Is the housing lottery based on random chance for everyone?","expects": "credit hours"},
+{"question": "When is the best time to do laundry in Fenwick Court?", "expects": "Tuesday"}, 
+{"question": "How is CS 340 graded - how many exams and are they open-book?", "expects": "open-book"},
+{"question": "How often does the campus shuttle run on weekdays?", "expects": "20 minutes"}, 
+{"question": "What is the price for a wash and dry cycle in Fenwick Court laundry room?", "expects": "$2.00"}, ]
 # Questions from a different world entirely. Your gate should refuse all five.
 #
 # There are five of these because criterion 3 in criteria.md names a target of
