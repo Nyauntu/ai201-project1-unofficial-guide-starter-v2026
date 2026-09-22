@@ -1,46 +1,16 @@
-# The Unofficial Guide
 
-<!-- Replace this line with your name and which corpus you picked. -->
+<!-- Nelly Nyauntu — corpus: campus_life -->
 
-> **This file is your submission.** Fill it in as you go — most sections get
-> written during the milestone that produces them, not at the end.
->
-> How the starter works, and every command you'll need, is in `RUNNING.md`.
-> Leave that file alone.
->
-> **Paste everything as text.** No screenshots, no video. A typed table gets
-> full credit; a picture of the same table gets none.
->
-> Delete these instruction blocks as you replace them. The `<!-- -->` comments
-> are notes to you and don't show up when the page renders — you can leave them
-> or remove them.
-
----
 
 # Unit 1
 
 ## What This Does
-
-<!-- Three or four sentences. Which corpus you picked, and the kinds of
-     questions your system answers. Write it for someone who has never seen
-     this repo.
-
-     Milestone 5. -->
+'This system answers questions about student life in college using the campus_life corpus — 88 short posts covering housing, dining, courses, and admin topics. It answers specific questions like whether the housing lottery is random or how loud a particular dorm is, always citing the source file it pulled from.'
 
 ## Chunking Strategy
+Paragraph-based, with a 600-character safety cap and 100-character overlap for any paragraph exceeding it.
 
-**Chunk size:**
-**Overlap:**
-
-<!-- What about YOUR documents made you pick these numbers? Short posts and
-     long sectioned guides don't want the same chunking, and "800 seemed
-     reasonable" earns nothing. Point at something you noticed when you read
-     the documents in Milestone 1.
-
-     If you changed your mind partway through, say so and say why. That's worth
-     more than pretending you got it right first time.
-
-     Milestone 3. -->
+I chose this chunk size and overlap size because In practice, campus_life's longest document is 549 characters, so the cap never activates, therefore,  every chunk here is a natural paragraph.
 
 ## Sample Chunks
 
