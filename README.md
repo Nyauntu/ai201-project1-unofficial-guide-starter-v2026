@@ -68,12 +68,9 @@ I measured the best retrieval distance for all 5 of my test questions and all 5 
 
 ## How I Used AI
 
-<!-- Two specific moments. For each: what you asked for, what came back, and
-     what you changed about it.
+1. I asked Claude to help me measure my relevance cutoff for Milestone 4 by running python app.py retrieve on all 5 of my test questions and all 5 OUT_OF_SCOPE questions. It reported my worst in-scope distance as 0.4066 and my best out-of-scope distance as 0.7803. I checked this myself against the actual terminal output rather than just trusting the summary, and confirmed the starter's default of 0.6 genuinely sits in the middle of that 0.37-wide gap, so I kept it rather than changing it.
 
-     "I asked Claude to write the chunking function from my notes. It ignored
-     the overlap, so I added that myself" is the level of detail we're after.
-     "I used AI to help me code" is not.
+2. I asked Claude to write a custom chunker for Milestone 3, since campus_life's documents are short, self-contained posts. It produced a paragraph-splitting function with an 800-character safety cap and 100-character overlap for any oversized paragraph. When I sampled 15 chunks to check quality, I found 3 were bare headings ("On the add/drop deadline", "On the parking permits") with no real content  because those documents put the title on its own line, separated from the body by a blank line, and my chunker splits on exactly that blank-line boundary. Claude proposed a fix (merging any paragraph under 60 characters into the next one), but I chose to document it as a known limitation in my README instead of implementing it immediately, since it wasn't blocking my five test questions from getting correct answers.
 
      Milestone 5. -->
 
