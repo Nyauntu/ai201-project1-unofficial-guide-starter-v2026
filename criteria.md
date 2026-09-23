@@ -24,7 +24,8 @@ Every answer the system produces names at least one source document.
 
 When I ask a question my documents clearly don't cover, the relevance gate stops it and the system returns "I don't have enough information about that" in at least 4 of 5 tries.
 
-**Why this target:** I haven't measured my actual distance gap yet, that happens in Milestone 4. I expect a clean separation because my OUT_OF_SCOPE questions share no vocabulary with campus_life's content. I will replace this reasoning with my actual measured distances after Milestone 4.
+**Why this target:** 
+I measured the best distance for all 5 of my test questions (worst: 0.4066) and all 5 OUT_OF_SCOPE questions (best: 0.7803). The gap between the two groups is about 0.37 wide with zero overlap, so a 4-of-5 target is very achievable at the starter's default 0.6 cutoff.Therefore, there's enough margin that a single mismeasured question wouldn't flip a refusal into an answer or vice versa.
 
 ---
 

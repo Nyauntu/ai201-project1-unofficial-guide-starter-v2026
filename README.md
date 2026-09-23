@@ -41,27 +41,30 @@ The campus store price-matches, which is not advertised anywhere and you have to
 
 ## Sample Answer
 
-<!-- One complete question and answer, pasted as text, with the source line
-     visible. Milestone 4. -->
-
 **Question:**
+Is the housing lottery based on random chance for everyone?
 
 **Answer:**
+No, the housing lottery is not random for everyone. While rising sophomores have a random number drawn, juniors and seniors are ordered by accumulated credit hours first, with random selection used only as a tie-breaker (admin_housing_lottery.txt). Source: admin_housing_lottery.txt
 
-**My relevance cutoff:**
+Note: this prompt's retrieved chunks included "On the housing lottery" — the heading-only fragment described in the Known Limitation above — alongside 3 other irrelevant chunks pulled in by top-k=5. Despite that noise, the model correctly grounded its answer only in the relevant document and ignored the rest, confirming the grounding instruction works even when retrieval returns some off-topic material.'
 
-<!-- The number you set in config.py, and how you got there.
+**My relevance cutoff: 0.6** (the starter default)
 
-     You ran five questions your corpus covers and the five in OUT_OF_SCOPE
-     that it clearly doesn't, and wrote down the best distance for each. What
-     did those two groups look like? Where was the gap? Put the actual numbers
-     here — the table below wants all ten rows.
-
-     Milestone 4. -->
+I measured the best retrieval distance for all 5 of my test questions and all 5 OUT_OF_SCOPE questions. My worst in-scope distance was 0.4066 (CS 340 exam format) and my best out-of-scope distance was 0.7803 (1994 World Cup) — a clean gap of about 0.37 with no overlap between the two groups. 0.6 sits comfortably in the middle of that gap, so I kept the starter's default rather than adjusting it.
 
 | Question | In corpus? | Best distance |
 |---|---|---|
-|  |  |  |
+| Is the housing lottery based on random chance for everyone? | Yes | 0.2476 |
+| When is the best time to do laundry in Fenwick Court? | Yes | 0.2304 |
+| How is CS 340 graded - how many exams and are they open-book? | Yes | 0.4066 |
+| What's the price for a wash and dry cycle in Fenwick Court's laundry room? | Yes | 0.2723 |
+| How often does the campus shuttle run on weekdays? | Yes | 0.3851 |
+| What is the capital of Mongolia? | No | 0.7986 |
+| How do I change the oil in a diesel engine? | No | 0.8502 |
+| Who won the 1994 World Cup? | No | 0.7803 |
+| What is the recommended dosage of ibuprofen for a headache? | No | 0.8243 |
+| How do I write a for loop in Rust? | No | 0.8313 |
 
 ## How I Used AI
 
