@@ -1,52 +1,43 @@
-
 <!-- Nelly Nyauntu — corpus: campus_life -->
 
 
 # Unit 1
 
 ## What This Does
-'This system answers questions about student life in college using the campus_life corpus — 88 short posts covering housing, dining, courses, and admin topics. It answers specific questions like whether the housing lottery is random or how loud a particular dorm is, always citing the source file it pulled from.'
+This system answers questions about student life in college using the campus_life corpus — 88 short posts covering housing, dining, courses, and admin topics. It answers specific questions like whether the housing lottery is random or how loud a particular dorm is, always citing the source file it pulled from.
 
 ## Chunking Strategy
-Paragraph-based, with a 600-character safety cap and 100-character overlap for any paragraph exceeding it.
+Paragraph-based, with an 800-character safety cap and 100-character overlap for any paragraph exceeding it.
 
-I chose this chunk size and overlap size because In practice, campus_life's longest document is 549 characters, so the cap never activates, therefore,  every chunk here is a natural paragraph.
+I chose this because campus_life's documents are short, self-contained posts, but several (like housing_fenwick_court.txt) contain multiple distinct sub-topics separated by paragraph breaks. Splitting on paragraph breaks keeps each thought intact without cutting mid-sentence, and doesn't over-split posts that are already a single paragraph. In practice, campus_life's longest document is 549 characters, so the 800-character cap never activates — every chunk here is a natural paragraph.
+
+Re-indexing with this chunker turned 88 documents into 271 chunks (up from the fallback's 88), confirming most documents do contain multiple paragraphs.
 
 ## Sample Chunks
 
-<!-- Five chunks, pasted as text. Label each one and name the file it came from
-     AND the function that produced it — the grader checks your code against
-     what you claim here.
+**Chunk 1** — source: `course_biol_160.txt#1` — produced by: `chunker.py::split_documents`
+I lived here my sophomore year. Format is lecture three times a week with a weekly lab. Assessment: four unit tests and a cumulative final. Not curved.
 
-     `python app.py chunks -n 5` prints all three for you. Copy them straight
-     across.
+**Chunk 2** — source: `dining_halden_hall.txt#1` — produced by: `chunker.py::split_documents`
+I lived here my sophomore year. Wait times: rarely more than 8 minutes, even at noon. The thing worth going for is soup rotation, and the bread is baked on site. The thing to know is that closes at 7:00pm, which catches people out.
 
-     Milestone 3. -->
 
-**Chunk 1** — source: `` — produced by: ``
+**Chunk 3** — source: `housing_fenwick_court_laundry.txt#1` — produced by: `chunker.py::split_documents`
 
-```
-```
+Machines take $2.00 wash, $1.75 dry, app-based. There are eight washers and six dryers for the building, which is the wrong ratio and means the dryers back up on Sunday evenings.
 
-**Chunk 2** — source: `` — produced by: ``
 
-```
-```
+**Chunk 4** — source: `housing_morrow_house.txt#2` — produced by: `chunker.py::split_documents`
 
-**Chunk 3** — source: `` — produced by: ``
+The good: cheapest housing tier by about $900 a year, and the singles are real singles.
 
-```
-```
 
-**Chunk 4** — source: `` — produced by: ``
+**Chunk 5** — source: `money_textbooks.txt#2` — produced by: `chunker.py::split_documents`
 
-```
-```
+The campus store price-matches, which is not advertised anywhere and you have to ask at the counter with the other listing on your phone.
 
-**Chunk 5** — source: `` — produced by: ``
 
-```
-```
+**Known limitation:** a few documents follow a Title/Body structure where the title (e.g. "On the add/drop deadline") is short enough to end up as its own paragraph and its own chunk, with no content. In a 15-chunk sample, 3 of 15 (20%) were heading-only fragments. A fix — merging any paragraph under 60 characters into the one that follows — was identified but not yet implemented.
 
 ## Sample Answer
 
@@ -56,9 +47,6 @@ I chose this chunk size and overlap size because In practice, campus_life's long
 **Question:**
 
 **Answer:**
-
-```
-```
 
 **My relevance cutoff:**
 
