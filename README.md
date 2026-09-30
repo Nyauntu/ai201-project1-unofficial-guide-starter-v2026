@@ -140,31 +140,24 @@ This isn't a pipeline failure. The system actually performed correctly on both r
 
 ## The Improvement
 
-**What I changed:**
+What I changed: 
+In `chunker.py::split_documents`, I added logic to merge any paragraph under 60 characters into the paragraph that follows it, before chunking. This catches heading-only paragraphs (like "On the add/drop deadline") and attaches them to their body text instead of leaving them as standalone fragment chunks.
 
-**Why I picked it:**
+Why I picked it: 
+This directly targets my Criterion 4 diagnosis: the chunker was splitting on blank lines, and several documents have a short title line separated from their body by a blank line, so the title became its own useless chunk. This was confirmed in 3 of 15 sampled chunks (20%) before the fix.
 
 ### Run Log — After
 
-<!-- Same format, same five criteria, three runs each.
-     `python run_eval.py --label after` -->
-
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. Chunk quality (complete thought, no chunk under 50 chars) | 4 of 5 + no chunk under 50 chars | 5/5, shortest 61 chars | 5/5, shortest 61 chars | 5/5, shortest 61 chars | MET |
+| 5. Correct source attribution on duplicate content | 4 of 5 such cases | 2/2 such cases found | 2/2 such cases found | 2/2 such cases found | Still unmeasurable as written |
 
-**Did it help?**
-
-<!-- Say plainly whether it did, and how you know. If it made things worse,
-     say that — a change that backfired, honestly reported, earns full credit
-     and is more interesting than one that worked. What matters is that you can
-     tell.
-
-     Milestone 4. -->
+Did it help?
+Yes, measurably. Criterion 4 flipped from MISSED to MET: re-sampling 5 chunks after the fix showed all 5 reading as complete thoughts, with the shortest chunk now 61 characters (above my 50-character floor), compared to the 25-character fragment before. Chunk count dropped from 271 to 177, since fragment paragraphs merged into their neighbors rather than standing alone. Criteria 1-3 stayed MET with no regression, and Criterion 5 is unchanged (expected, since this fix targeted chunking, not the criterion's wording problem).
 
 ## What's Still Broken
 

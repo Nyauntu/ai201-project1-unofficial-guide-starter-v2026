@@ -91,6 +91,12 @@ def split_documents(documents: list[Document]) -> list[Chunk]:
     intact without cutting mid-sentence, and doesn't over-split posts that
     are already a single paragraph.
 
+    Unit 2 fix: paragraphs under 60 characters (headings like "On the
+    add/drop deadline") are merged into the paragraph that follows, since a
+    bare heading can't answer a question on its own. Diagnosed in Unit 2
+    Milestone 3: this pattern showed up in 3 of 15 sampled chunks (20%) and
+    broke Criterion 4's "no chunk under 50 characters" target.
+
     A paragraph longer than CHUNK_SIZE falls back to character-window
     splitting with overlap, so no single chunk ever exceeds the cap. In
     practice, this corpus's longest document (549 chars) never triggers it.
@@ -100,7 +106,21 @@ def split_documents(documents: list[Document]) -> list[Chunk]:
 
     chunks: list[Chunk] = []
     for doc in documents:
-        paragraphs = [p.strip() for p in doc.text.split("\n\n") if p.strip()]
+        raw_paragraphs = [p.strip() for p in doc.text.split("\n\n") if p.strip()]
+
+        paragraphs = []
+        buffer = ""
+        for p in raw_paragraphs:
+            if len(p) < 60 and buffer == "":
+                buffer = p
+            elif buffer:
+                paragraphs.append(buffer + "\n\n" + p)
+                buffer = ""
+            else:
+                paragraphs.append(p)
+        if buffer:
+            paragraphs.append(buffer)
+
         index = 0
         for para in paragraphs:
             if len(para) <= chunk_size:
@@ -130,7 +150,6 @@ def split_documents(documents: list[Document]) -> list[Chunk]:
                     start += chunk_size - overlap
 
     return chunks
-
 
 def describe(chunks: list[Chunk]) -> str:
     """A one-line summary, printed after indexing."""
