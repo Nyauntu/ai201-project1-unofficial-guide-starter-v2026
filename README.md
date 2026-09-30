@@ -113,44 +113,36 @@ Answer: No, the housing lottery is not random for everyone. While rising sophomo
 
 ## Verdicts
 
-     Milestone 2. -->
-
 | # | Criterion | Verdict | How I decided |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-| 4 |  |  |  |
-| 5 |  |  |  |
+| 1 | Retrieved chunk contains the answer | MET | All 5 questions had their correct source among the top-5 retrieved chunks in all 3 runs. Retrieval is deterministic, so this doesn't vary by run. |
+| 2 | Every answer names a source | MET | All 15 generated answers (5 questions x 3 runs) name their source file, either inline or as a separate line. This is structurally guaranteed by the grounding instruction and chunk metadata. |
+| 3 | Gate stops out-of-corpus questions | MET | All 5 OUT_OF_SCOPE questions were refused, with best distances (0.780-0.850) well above the 0.6 cutoff, in the single deterministic gate pass. |
+| 4 | Chunk quality (complete thought, no chunk under 50 chars) | MISSED | 4 of 5 sampled chunks read as complete thoughts, but Chunk 1 ("On the add/drop deadline") is 25 characters, breaking my own 50-character floor. My criterion joined both conditions with "and," so one violation misses the whole target. |
+| 5 | Correct source attribution on duplicate content | Unmeasurable as written | Only 2 of my 5 test questions actually involve duplicate-content ambiguity, not 5. Both of those 2 cases correctly attributed the right building-specific source. My target assumed a denominator of 5 that doesn't exist in my test set. |
 
+ 
 ## Diagnoses
 
-<!-- For each miss: which stage caused it, and how. The stage alone isn't
-     enough — you need the mechanism.
+Criterion 4 (Chunk quality) — MISSED
 
-     Not a diagnosis: "Question 3 didn't work."
-     A diagnosis:     "Question 3 asks about laundry costs. The answer is in
-                       one sentence that got split across two chunks, so
-                       neither chunk on its own contains it."
+Stage: chunking.
 
-     The five stages: loading → chunking → embedding → retrieval → generation.
+Mechanism: `chunker.py::split_documents` splits on blank-line paragraph breaks. Several documents in campus_life (e.g. admin_add_drop_deadline.txt) are written as a short title line, then a blank line, then the body paragraph. Because the title line sits above a blank line just like a real paragraph break, my chunker treats it as its own separate paragraph and therefore its own chunk — even though a bare title like "On the add/drop deadline" (25 characters) can't answer any question on its own.
 
-     Look for a pattern. If three misses all ask about numbers, that's one
-     problem, not three.
+This is a chunking-stage problem, not a retrieval or generation problem: the fragment chunk gets created before retrieval ever runs, and it doesn't cause wrong answers (Criterion 1 and 2 both still passed 5/5) because retrieval still finds the real content chunk alongside the fragment. But it does violate my own quality bar, and it wastes one of the 5 chunk slots retrieval could otherwise use.
 
-     Missed nothing? Say so, then say honestly whether your targets were set
-     low, and which one you'd tighten and to what.
+Pattern check: I sampled a wider set (15 chunks) back in Unit 1 and found this same issue in 3 of 15 (20%), so this isn't a one-off. It's a systematic property of any document following the Title/Body structure.
 
-     Milestone 3. -->
+Criterion 5 (Correct source attribution on duplicate content) — not a miss but measurement problem
+
+This isn't a pipeline failure. The system actually performed correctly on both relevant test cases (2 of 2). The issue is with how I wrote the criterion: I set a target of "4 of 5 such cases" without checking how many of my actual 5 test questions would even qualify as "such cases." Only 2 do. 
 
 ## The Improvement
 
 **What I changed:**
 
 **Why I picked it:**
-
-<!-- Connect it to a specific diagnosis above in one sentence. If you can't,
-     you picked a fix because it sounded impressive. -->
 
 ### Run Log — After
 
