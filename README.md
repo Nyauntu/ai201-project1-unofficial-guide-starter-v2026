@@ -161,17 +161,8 @@ Yes, measurably. Criterion 4 flipped from MISSED to MET: re-sampling 5 chunks af
 
 ## What's Still Broken
 
-<!-- For each criterion still missed after your fix: what you'd do about it,
-     and why you stopped where you did.
-
-     "I ran out of time" is fine if it's true. Pretending nothing is left is
-     not.
-
-     Milestone 5. -->
+Criterion 5 still can't really be measured. My fix was about chunking, so it didn't touch this problem at all. Only 2 of my 5 test questions actually involve duplicate content across buildings, so I can't fairly say "4 of 5" when there are only 2 cases to check. I didn't fix this now because the assignment's rule for this unit is one change only, and this isn't a code problem anyway — it's a problem with how I wrote the criterion. If I kept going, I'd add 2-3 more test questions that involve duplicate content, so I'd actually have 5 real cases to check.
 
 ## What I'd Do Differently
 
-<!-- Knowing what you know now — which of your five criteria would you write
-     differently, and why?
-
-     Milestone 5. -->
+I'd write Criterion 5 differently from the start. The idea behind it is still good: check that the system picks the right source when several documents look similar. But I picked the number "4 of 5" before checking whether my test questions would even give me 5 cases like that. Next time I'd write it more like "for every question in my test set that has this duplicate-content problem, the system should pick the right source" instead of locking in a number before I knew how many such questions I'd actually have.
