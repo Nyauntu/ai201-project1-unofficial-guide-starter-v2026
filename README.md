@@ -87,42 +87,31 @@ I measured the best retrieval distance for all 5 of my test questions and all 5 
 
 # Unit 2
 
-<!-- These sections get ADDED to what's already above. Don't delete or rewrite
-     unit 1 — the point is that someone can see what you said before you knew
-     how it went. -->
 
 ## Run Log — Before
 
-<!-- Your five criteria, three runs each. `python run_eval.py --label before`
-     runs the questions, puts the OUT_OF_SCOPE ones through the gate, and
-     writes it all into results/ for you. Targets come from criteria.md; the
-     verdict column is your call.
-
-     Criterion 3 is measured in one deterministic pass rather than three, so
-     the same number goes in all three run columns. That's correct, not lazy.
-
-     Milestone 1. -->
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. Chunk quality (complete thought, no chunk under 50 chars) | 4 of 5 + no chunk under 50 chars | 4/5, one chunk at 25 chars | 4/5, one chunk at 25 chars | 4/5, one chunk at 25 chars | MISSED |
+| 5. Correct source attribution on duplicate content | 4 of 5 such cases | 2/2 such cases found | 2/2 such cases found | 2/2 such cases found | Unmeasurable as written |
 
-<!-- Underneath, paste the REAL output for each criterion from one of your
-     runs — the actual text your system produced, not a description of it.
-     Name the file and function that produced it. -->
+**Criterion 1 & 2 example** (source: `results/run_2026-09-30_1347.md`, produced by `generate.py::answer_from_chunks`):
+
+Question: Is the housing lottery based on random chance for everyone?
+
+Answer: No, the housing lottery is not random for everyone. While rising sophomores have a random number drawn, juniors and seniors are ordered by accumulated credit hours first, with random selection used only as a tie-breaker (admin_housing_lottery.txt).
+
+**Criterion 3** (produced by `run_eval.py::check_out_of_scope`): gate refused 5 of 5 out-of-scope questions, best distances ranging 0.780-0.850, all above the 0.6 cutoff.
+
+**Criterion 4** (produced by `chunker.py::split_documents`, via `app.py chunks -n 5`): Chunk 1, source admin_add_drop_deadline.txt#0: "On the add/drop deadline" (25 characters — fails the 50-char floor).
+
+**Criterion 5**: Q2 retrieved laundry files from 4 different buildings but correctly cited housing_fenwick_court_laundry.txt. Q5 retrieved 3 buildings with different prices ($2.00/$1.75, $1.75/$1.75, $1.50/$1.50) but correctly cited housing_fenwick_court.txt's $2.00/$1.75.
 
 ## Verdicts
-
-<!-- MET or MISSED for each of the five, against the target you wrote last
-     unit — not a new one. Plus a sentence on how you decided. That sentence
-     matters most where it was close.
-
-     If your target said 4 of 5 and your runs came out 4, 3, 4, that's a MISS.
-     The target has to hold, not show up occasionally.
 
      Milestone 2. -->
 
